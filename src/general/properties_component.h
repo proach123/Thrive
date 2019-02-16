@@ -49,6 +49,6 @@ public:
 
     std::string speciesName;
     std::string agentType;
-    ObjectID parentId;
+    ObjectID parentId = NULL_OBJECT;
 };
 } // namespace thrive
