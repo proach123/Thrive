@@ -480,7 +480,8 @@ bool hitAgent(GameWorld@ world, ObjectID firstEntity, ObjectID secondEntity)
     {
         if (firstPropertiesComponent !is null && secondMicrobeComponent !is null)
         {
-            if (firstPropertiesComponent.getSpeciesName()==secondMicrobeComponent.speciesName)
+            if (firstPropertiesComponent.getSpeciesName()==secondMicrobeComponent.speciesName ||
+            firstPropertiesComponent.getParentEntity()==secondEntity)
             {
                 shouldCollide = false;
                 return shouldCollide;
@@ -488,7 +489,8 @@ bool hitAgent(GameWorld@ world, ObjectID firstEntity, ObjectID secondEntity)
         }
         else if (secondPropertiesComponent !is null && firstMicrobeComponent !is null)
         {
-            if (secondPropertiesComponent.getSpeciesName()==firstMicrobeComponent.speciesName)
+            if (secondPropertiesComponent.getSpeciesName()==firstMicrobeComponent.speciesName ||
+            secondPropertiesComponent.getParentEntity()==firstEntity)
             {
                 shouldCollide = false;
                 return shouldCollide;
@@ -507,25 +509,27 @@ bool hitAgent(GameWorld@ world, ObjectID firstEntity, ObjectID secondEntity)
 }
 
 void createAgentCloud(CellStageWorld@ world, CompoundId compoundId,
-    Float3 pos, Float3 direction, float amount, float lifetime, string speciesName)
+    Float3 pos, Float3 direction, float amount, float lifetime,
+    string speciesName, ObjectID creatorEntity)
 {
     auto normalizedDirection = direction.Normalize();
     auto agentEntity = world.CreateEntity();
 
     auto position = world.Create_Position(agentEntity, pos + (direction * 1.5),
         Ogre::Quaternion(Ogre::Degree(GetEngine().GetRandom().GetNumber(0, 360)),
-            Ogre::Vector3(0, 1, 0)));
-
-
-    auto rigidBody = world.Create_Physics(agentEntity, position);
+            Ogre::Vector3(0,1, 0)));
 
     // Agent
     auto agentProperties = world.Create_AgentProperties(agentEntity);
     agentProperties.setSpeciesName(speciesName);
+    agentProperties.setParentEntity(creatorEntity);
     agentProperties.setAgentType("oxytoxy");
 
+    auto rigidBody = world.Create_Physics(agentEntity, position);
+
+
     auto body = rigidBody.CreatePhysicsBody(world.GetPhysicalWorld(),
-        world.GetPhysicalWorld().CreateSphere(HEX_SIZE), 1,
+        world.GetPhysicalWorld().CreateSphere(HEX_SIZE), 0.5,
         world.GetPhysicalMaterial("agentCollision"));
 
     body.ConstraintMovementAxises();
@@ -596,6 +600,7 @@ ObjectID createToxin(CellStageWorld@ world, Float3 pos)
     // Agent
     auto agentProperties = world.Create_AgentProperties(toxinEntity);
     agentProperties.setSpeciesName("");
+    agentProperties.setParentEntity(NULL_OBJECT);
     agentProperties.setAgentType("oxytoxy");
 
     auto model = world.Create_Model(toxinEntity, renderNode.Node, "oxytoxy.mesh");
