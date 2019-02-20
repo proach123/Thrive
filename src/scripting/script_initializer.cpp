@@ -556,16 +556,13 @@ bool
            engine, "EngulfableComponent", &EngulfableComponentTYPEProxy))
         return false;
 
-    if(engine->RegisterObjectMethod("EngulfableComponent",
-           "float getSize()",
-           asMETHOD(EngulfableComponent, getSize),
-           asCALL_THISCALL) < 0) {
+    if(engine->RegisterObjectMethod("EngulfableComponent", "float getSize()",
+           asMETHOD(EngulfableComponent, getSize), asCALL_THISCALL) < 0) {
         ANGELSCRIPT_REGISTERFAIL;
     }
 
     if(engine->RegisterObjectMethod("EngulfableComponent",
-           "void setSize(float size)",
-           asMETHOD(EngulfableComponent, setSize),
+           "void setSize(float size)", asMETHOD(EngulfableComponent, setSize),
            asCALL_THISCALL) < 0) {
         ANGELSCRIPT_REGISTERFAIL;
     }

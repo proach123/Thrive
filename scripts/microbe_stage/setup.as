@@ -647,6 +647,7 @@ ObjectID createIron(CellStageWorld@ world, Float3 pos)
     // 5 is the default
     float ironAmount = 3.0f;
     double ironBagAmount= IRON_PER_SMALL_CHUNK;
+    bool dissolves=SMALL_IRON_DISSOLVES;
     // There are four kinds
     switch (GetEngine().GetRandom().GetNumber(0, 4))
         {
@@ -667,6 +668,7 @@ ObjectID createIron(CellStageWorld@ world, Float3 pos)
         ironSize=10;
         ironAmount=10.0f;
         ironBagAmount=IRON_PER_BIG_CHUNK;
+        dissolves=LARGE_IRON_DISSOLVES;
         break;
         }
 
@@ -674,6 +676,7 @@ ObjectID createIron(CellStageWorld@ world, Float3 pos)
     auto venter = world.Create_CompoundVenterComponent(ironEntity);
     // So that larger iron chunks give out more compounds
     venter.setVentAmount(ironAmount);
+    venter.setDoDissolve(dissolves);
     auto bag = world.Create_CompoundBagComponent(ironEntity);
 
     bag.setCompound(SimulationParameters::compoundRegistry().getTypeId("iron"),ironBagAmount);

@@ -52,14 +52,14 @@ class EngulfableComponent : public Leviathan::Component {
 public:
     EngulfableComponent();
 
-	float size;
+    float size;
 
     REFERENCE_HANDLE_UNCOUNTED_TYPE(EngulfableComponent);
 
     static constexpr auto TYPE =
         componentTypeConvert(THRIVE_COMPONENT::ENGULFABLE);
 
-	void
+    void
         setSize(float size);
 
     float
