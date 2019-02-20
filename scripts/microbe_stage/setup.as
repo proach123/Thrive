@@ -648,6 +648,7 @@ ObjectID createIron(CellStageWorld@ world, Float3 pos)
     float ironAmount = 3.0f;
     double ironBagAmount= IRON_PER_SMALL_CHUNK;
     bool dissolves=SMALL_IRON_DISSOLVES;
+    int ironEngulfSize = 2;
     // There are four kinds
     switch (GetEngine().GetRandom().GetNumber(0, 4))
         {
@@ -667,6 +668,7 @@ ObjectID createIron(CellStageWorld@ world, Float3 pos)
         mesh="iron_05.mesh";
         ironSize=10;
         ironAmount=10.0f;
+        ironEngulfSize = 100;
         ironBagAmount=IRON_PER_BIG_CHUNK;
         dissolves=LARGE_IRON_DISSOLVES;
         break;
@@ -678,7 +680,8 @@ ObjectID createIron(CellStageWorld@ world, Float3 pos)
     venter.setVentAmount(ironAmount);
     venter.setDoDissolve(dissolves);
     auto bag = world.Create_CompoundBagComponent(ironEntity);
-
+    auto engulfable = world.Create_EngulfableComponent(ironEntity);
+    engulfable.setSize(ironEngulfSize);
     bag.setCompound(SimulationParameters::compoundRegistry().getTypeId("iron"),ironBagAmount);
     auto model = world.Create_Model(ironEntity, renderNode.Node, mesh);
     // Need to set the tint
