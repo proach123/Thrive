@@ -1170,27 +1170,28 @@ void kill(CellStageWorld@ world, ObjectID microbeEntity)
         }
     }
 
-
-
-     for(uint i = 0; i < max(1,microbeComponent.organelles.length()/3); ++i){
-    // Chunk(should separate into own function)
+    
+    
+     for(uint i = 0; i < max(1,microbeComponent.organelles.length()/5); ++i){
+        double amount = max(1,microbeComponent.organelles.length()/5);
+        // Chunk(should separate into own function)
         ObjectID chunkEntity = world.CreateEntity();
         auto chunkPosition = world.Create_Position(chunkEntity, position._Position,
             Ogre::Quaternion(Ogre::Degree(GetEngine().GetRandom().GetNumber(0, 360)),
                 Ogre::Vector3(0,1,1)));
-
+            
         auto renderNode = world.Create_RenderNode(chunkEntity);
-        renderNode.Scale = Float3(3, 3, 3);
+        renderNode.Scale = Float3(2, 2, 2);
         renderNode.Marked = true;
         renderNode.Node.setOrientation(Ogre::Quaternion(
             Ogre::Degree(GetEngine().GetRandom().GetNumber(0, 360)), Ogre::Vector3(0,1,1)));
         renderNode.Node.setPosition(chunkPosition._Position);
         // temp model for testing
         auto model = world.Create_Model(chunkEntity, renderNode.Node, "mitochondrion.mesh");
-        model.GraphicalObject.setCustomParameter(1, Ogre::Vector4(1, 1, 1, 1));
+        model.GraphicalObject.setCustomParameter(1, microbeComponent.speciesColour);
         auto rigidBody = world.Create_Physics(chunkEntity, chunkPosition);
         auto body = rigidBody.CreatePhysicsBody(world.GetPhysicalWorld(),
-            world.GetPhysicalWorld().CreateSphere(1), 1);
+            world.GetPhysicalWorld().CreateSphere(1), 10);
         body.ConstraintMovementAxises();
         rigidBody.JumpTo(chunkPosition);
         auto venter = world.Create_CompoundVenterComponent(chunkEntity);
@@ -1202,7 +1203,7 @@ void kill(CellStageWorld@ world, ObjectID microbeEntity)
         for(uint64 compoundID = 0; compoundID <
                 SimulationParameters::compoundRegistry().getSize(); ++compoundID)
             {
-            bag.setCompound(compoundID, float(compoundsToRelease[formatUInt(compoundID)]));
+            bag.setCompound(compoundID, float(compoundsToRelease[formatUInt(compoundID)])/amount);
             }
     }
     // Play the death sound
