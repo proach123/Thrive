@@ -1172,8 +1172,8 @@ void kill(CellStageWorld@ world, ObjectID microbeEntity)
 
     
     
-     for(uint i = 0; i < max(1,microbeComponent.organelles.length()/5); ++i){
-        double amount = max(1,microbeComponent.organelles.length()/5);
+    for(uint i = 0; i < max(1,microbeComponent.organelles.length()/CORPSE_CHUNK_DIVISER); ++i){
+        double amount = max(1,microbeComponent.organelles.length()/CORPSE_CHUNK_DIVISER);
         // Chunk(should separate into own function)
         ObjectID chunkEntity = world.CreateEntity();
         auto chunkPosition = world.Create_Position(chunkEntity, position._Position,
@@ -1188,6 +1188,7 @@ void kill(CellStageWorld@ world, ObjectID microbeEntity)
         renderNode.Node.setPosition(chunkPosition._Position);
         // temp model for testing
         auto model = world.Create_Model(chunkEntity, renderNode.Node, "mitochondrion.mesh");
+        // Color chunk based on cell
         model.GraphicalObject.setCustomParameter(1, microbeComponent.speciesColour);
         auto rigidBody = world.Create_Physics(chunkEntity, chunkPosition);
         auto body = rigidBody.CreatePhysicsBody(world.GetPhysicalWorld(),
@@ -1203,7 +1204,7 @@ void kill(CellStageWorld@ world, ObjectID microbeEntity)
         for(uint64 compoundID = 0; compoundID <
                 SimulationParameters::compoundRegistry().getSize(); ++compoundID)
             {
-            bag.setCompound(compoundID, float(compoundsToRelease[formatUInt(compoundID)])/amount);
+            bag.setCompound(compoundID, (float(compoundsToRelease[formatUInt(compoundID)])/amount)*CORPSE_COMPOUND_COMPENSATION);
             }
     }
     // Play the death sound
