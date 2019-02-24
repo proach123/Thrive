@@ -40,6 +40,7 @@ class MicrobeAIControllerComponent : ScriptComponent{
     double speciesFear = -1.0f;
     double speciesActivity = -1.0f;
     double speciesFocus = -1.0f;
+    double speciesOpportunism = -1.0;
     bool hasTargetPosition = false;
     Float3 targetPosition = Float3(0, 0, 0);
     bool hasSearchedCompoundId = false;
@@ -128,6 +129,9 @@ class MicrobeAISystem : ScriptSystem{
                 }
             if (aiComponent.speciesFocus == -1.0f){
                 aiComponent.speciesFocus = ourSpecies.focus;
+                }
+            if (aiComponent.speciesOpportunism == -1.0f){
+                aiComponent.speciesOpportunism = ourSpecies.opportunism;
                 }
             }
                 // Were for debugging

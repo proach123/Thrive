@@ -56,6 +56,7 @@ const auto MAX_SPECIES_AGRESSION = 400.0f;
 const auto MAX_SPECIES_FEAR = 400.0f;
 const auto MAX_SPECIES_ACTIVITY = 400.0f;
 const auto MAX_SPECIES_FOCUS = 400.0f;
+const auto MAX_SPECIES_OPPORTUNISM = 400.0f;
 
 // Personality Mutation
 const auto MAX_SPECIES_PERSONALITY_MUTATION = 20.0f;
@@ -72,6 +73,7 @@ const auto AGRESSION_DIVISOR = 25.0f;
 const auto FEAR_DIVISOR = 25.0f;
 const auto ACTIVITY_DIVISOR = 100.0f;
 const auto FOCUS_DIVISOR = 100.0f;
+const auto OPPORTUNISM_DIVISOR = 100.0f;
 
 // Cooldown for AI for toggling engulfing
 const uint AI_ENGULF_INTERVAL=300;
